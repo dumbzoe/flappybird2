@@ -6,7 +6,6 @@ mod ui;
 
 use crate::AppState;
 use bevy::{math::f32, prelude::*, window::WindowResolution};
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_rapier2d::prelude::*;
 
 #[derive(States, Debug, Hash, Eq, PartialEq, Clone)]
@@ -38,10 +37,6 @@ impl Plugin for GamePlugin {
                 pipe_spawner::PipeSpawnerPlugin,
                 cloud::CloudPlugin,
                 RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0),
-            ))
-            .add_plugins((
-                RapierDebugRenderPlugin::default(),
-                WorldInspectorPlugin::new(),
             ))
             .add_systems(
                 OnEnter(AppState::Playing),

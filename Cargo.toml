@@ -9,7 +9,6 @@ edition = "2021"
 # TODO: Remove dynamic linking feature before final compile
 bevy = { version = "0.13.0", features = ["dynamic_linking"] }
 bevy_rapier2d = { version = "0.25.0", features = [ "simd-stable", "debug-render-2d" ] }
-bevy-inspector-egui = "0.23"
 rand = "0.8.5"
 
 
