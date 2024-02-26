@@ -26,6 +26,7 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
+//App state so we can keep track of if we're on mainmenu or playing
 #[derive(States, Debug, Hash, Eq, PartialEq, Clone)]
 pub enum AppState {
     MainMenu,

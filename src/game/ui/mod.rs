@@ -18,9 +18,11 @@ impl Plugin for UiPlugin {
     }
 }
 
+//component so we can keep track of Text in the game
 #[derive(Component)]
-struct TextBase;
+struct GameText;
 
+//sets up the score in the top left hand corner
 fn setup(mut commands: Commands, score: Res<Score>, asset_server: Res<AssetServer>) {
     commands.spawn((
         TextBundle::from_section(
@@ -41,12 +43,14 @@ fn setup(mut commands: Commands, score: Res<Score>, asset_server: Res<AssetServe
             ),
             ..default()
         }),
-        TextBase,
+        GameText,
         Game,
     ));
 }
 
-fn update_score(mut text: Query<&mut Text, With<TextBase>>, score: Res<Score>) {
+//increases the score when you go through a pipegap
+//could probably move this into the function when you get a point so its not being called every frame
+fn update_score(mut text: Query<&mut Text, With<GameText>>, score: Res<Score>) {
     for mut text in text.iter_mut() {
         text.sections[0].value = score.0.to_string();
     }

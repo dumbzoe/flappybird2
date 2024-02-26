@@ -22,6 +22,7 @@ impl Plugin for CloudPlugin {
     }
 }
 
+//timer similar to pipe_spawner
 #[derive(Resource)]
 struct CloudTimer {
     time_since_last_spawn: f32,
@@ -40,10 +41,14 @@ impl Default for CloudTimer {
 #[derive(Component)]
 struct Cloud;
 
+//Path for the cloud sprite as i got too annoyed at repeately typing while trying to debug
 const CLOUDPATH: &str = "Sprites/cloud.png";
+//spawns at the same point as the pipes cuz its offscreen;
 const SPAWNPOS_X: f32 = 1200.;
+//can spawn higher than the pipes cuz well its a background timer
 const HEIGHT: f32 = 540.;
 
+//spawns the clouds
 fn cloud_spawn(
     time: Res<Time>,
     mut cloud_timer: ResMut<CloudTimer>,
@@ -51,8 +56,14 @@ fn cloud_spawn(
     asset_server: Res<AssetServer>,
 ) {
     if cloud_timer.time_since_last_spawn > cloud_timer.time_needed_to_spawn {
+        //create a base cloud entity
         let mut cloud = commands.spawn((RigidBody::KinematicVelocityBased, Cloud, Game));
         let distance = thread_rng().gen_range(1..4);
+        //spawn rate:
+        //  1-2: Spawn a cloud:
+        //      1: spawns the smaller cloud
+        //      2: spawns the larger cloud
+        //  3-4: Doesn't spawn cloud
         match distance {
             1 => {
                 cloud
@@ -123,6 +134,7 @@ fn cloud_spawn(
     cloud_timer.time_since_last_spawn += time.delta_seconds();
 }
 
+//slows down the clouds when the player dies
 fn cloud_slow_down(mut clouds: Query<&mut Velocity, With<Cloud>>) {
     for mut velocity in clouds.iter_mut() {
         if velocity.linvel.x < -25. {

@@ -6,6 +6,7 @@ use rand::{thread_rng, Rng};
 use crate::game::GameState;
 use crate::game::{degrees_to_radians, Game};
 
+//sets spawnpos and a max height for the components to use
 const SPAWNPOS_X: f32 = 1200.;
 const MAXHEIGHT: f32 = 375.;
 
@@ -47,6 +48,7 @@ pub struct PipeGap {
 #[derive(Component)]
 pub struct Pipe;
 
+//pipe default to attempt to keep code looking cleaner... i failed xD
 impl Default for PipeBundle {
     fn default() -> Self {
         PipeBundle {
@@ -62,6 +64,7 @@ impl Default for PipeBundle {
     }
 }
 
+//timer to time the pipes spawn
 #[derive(Resource)]
 struct PipeTimer {
     time_since_last_spawn: f32,
@@ -77,6 +80,8 @@ impl Default for PipeTimer {
     }
 }
 
+//creates the pipes when timer is correct
+//god this code is a mess
 fn spawn_pipe(
     mut pipe_timer: ResMut<PipeTimer>,
     time: Res<Time>,
@@ -127,6 +132,7 @@ fn spawn_pipe(
     pipe_timer.time_since_last_spawn += time.delta_seconds()
 }
 
+//Slows down the pipes when the player dies
 fn pipe_slow_down(mut pipes: Query<&mut Velocity, With<PipeGap>>) {
     for mut velocity in pipes.iter_mut() {
         if velocity.linvel.x < 0. {

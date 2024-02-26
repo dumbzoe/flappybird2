@@ -23,6 +23,7 @@ enum MenuButtonAction {
     Exit,
 }
 
+//manages the button
 fn button_system(
     mut interaction_query: Query<
         (
@@ -62,6 +63,9 @@ fn button_system(
     }
 }
 
+//This function took me a solid day to do
+//Why does UI suck
+//sets up the mainmenu
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut backdrop: ResMut<ClearColor>) {
     backdrop.0 = Color::GRAY;
 

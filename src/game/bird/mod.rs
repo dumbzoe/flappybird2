@@ -12,7 +12,6 @@ impl Plugin for BirdPlugin {
                 Update,
                 (
                     jump.run_if(in_state(main::game::GameState::Playing)),
-                    reset_on_esc,
                     rotate_based_on_velocity,
                 ),
             );
@@ -32,6 +31,7 @@ struct FlappyBird {
     pub game: Game,
 }
 
+// The first Comment
 //CIRCLERADIUS is a tuple so that we can have more forgiving hitboxes
 //The first number is the width of the sprite/mesh and the second number is the offset so its more forgiving
 const CIRCLERADIUS: (f32, f32) = (30., 5.);
@@ -52,6 +52,7 @@ impl Default for FlappyBird {
     }
 }
 
+//spawns the bird with a custom sprite
 fn setup(mut commands: Commands, assets_server: Res<AssetServer>) {
     commands
         .spawn((
@@ -69,6 +70,7 @@ fn setup(mut commands: Commands, assets_server: Res<AssetServer>) {
         .insert(TransformBundle::from(Transform::from_xyz(-400., 0., 0.)));
 }
 
+//jumps when you press space
 fn jump(mut bird: Query<&mut Velocity, With<Bird>>, input: Res<ButtonInput<KeyCode>>) {
     for mut velocity in bird.iter_mut() {
         if input.just_pressed(KeyCode::Space) {
@@ -77,6 +79,7 @@ fn jump(mut bird: Query<&mut Velocity, With<Bird>>, input: Res<ButtonInput<KeyCo
     }
 }
 
+//rotates the bird based on vertical velocity
 fn rotate_based_on_velocity(mut bird: Query<(&mut Transform, &Velocity), With<Bird>>) {
     for (mut transform, velocity) in bird.iter_mut() {
         let mut angle = velocity.linvel.y / 10.;
@@ -88,19 +91,5 @@ fn rotate_based_on_velocity(mut bird: Query<(&mut Transform, &Velocity), With<Bi
         }
 
         transform.rotation = Quat::from_rotation_z(main::game::degrees_to_radians(angle));
-    }
-}
-
-//TODO: Delete Code After this as this is for debugging
-
-fn reset_on_esc(
-    mut bird: Query<(&mut Transform, &mut Velocity), With<Bird>>,
-    input: Res<ButtonInput<KeyCode>>,
-) {
-    for (mut transform, mut velocity) in bird.iter_mut() {
-        if input.pressed(KeyCode::Escape) {
-            transform.translation.y = 0.;
-            velocity.linvel.y = 0.;
-        }
     }
 }
