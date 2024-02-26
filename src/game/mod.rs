@@ -69,6 +69,10 @@ impl Plugin for GamePlugin {
     }
 }
 
+//Score component keeping an unsigned 32bit int cuz Score can't be decreased
+#[derive(Resource, Deref, DerefMut, Clone, Copy)]
+pub struct Score(u32);
+
 //sets the background colour to sky blue
 fn set_sky_colour(mut sky_colour: ResMut<ClearColor>) {
     sky_colour.0 = Color::rgb_u8(135, 206, 235);
@@ -130,10 +134,6 @@ fn bird_pipe_collide(
 #[derive(Component)]
 pub struct Game;
 
-//Score component keeping an unsigned 32bit int cuz Score can't be decreased
-#[derive(Resource)]
-pub struct Score(u32);
-
 //resource for a timer so that you don't instantly get send back when you die
 #[derive(Resource)]
 struct GameOverTimer {
@@ -167,6 +167,6 @@ fn gameover(
 //unloads all items when you go to menu;
 fn exit(mut items: Query<Entity, With<Game>>, mut commands: Commands) {
     for entity in items.iter_mut() {
-        commands.entity(entity).despawn_descendants().despawn()
+        commands.entity(entity).despawn_recursive();
     }
 }

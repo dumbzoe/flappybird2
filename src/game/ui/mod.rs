@@ -52,6 +52,6 @@ fn setup(mut commands: Commands, score: Res<Score>, asset_server: Res<AssetServe
 //could probably move this into the function when you get a point so its not being called every frame
 fn update_score(mut text: Query<&mut Text, With<GameText>>, score: Res<Score>) {
     for mut text in text.iter_mut() {
-        text.sections[0].value = score.0.to_string();
+        text.sections[0].value = score.to_string();
     }
 }

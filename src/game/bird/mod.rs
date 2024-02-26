@@ -23,6 +23,7 @@ pub struct Bird;
 
 #[derive(Bundle)]
 struct FlappyBird {
+    pub name: Name,
     pub rigidbody: RigidBody,
     pub collider: Collider,
     pub gravityscale: GravityScale,
@@ -42,6 +43,7 @@ impl Default for FlappyBird {
     fn default() -> Self {
         let gravity: f32 = 10.;
         FlappyBird {
+            name: Name::from("Bird"),
             rigidbody: RigidBody::Dynamic,
             collider: Collider::ball(CIRCLERADIUS.0 - CIRCLERADIUS.1),
             gravityscale: GravityScale(gravity),
